@@ -8,10 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter @Setter
-@Table(schema = "curl_proyect", name = "employee")
+@Table(schema = "curl_proyect", name = "employee", indexes = @Index(name = "fn_index_document_id", columnList = "document_id"))
 @NoArgsConstructor
 public class Employee {
 
@@ -20,22 +22,22 @@ public class Employee {
     @GeneratedValue(generator = "curl_proyect.employee_id_seq",strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "document_id")
+    @Column(name = "document_id", columnDefinition = "text")
     private String documentId;
 
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "text")
     private String name;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", columnDefinition = "text")
     private String lastName;
 
     @Column(name = "gender")
     private Gender gender;
 
-    @Column(name = "birth_date")
-    private Timestamp birthDate;
+    @Column(name = "birth_date", columnDefinition = "timestamp")
+    private LocalDateTime birthDate;
 
-    @Column(name = "income")
+    @Column(name = "income", columnDefinition = "numeric")
     private Double income;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,7 +45,10 @@ public class Employee {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private EmployeeType employeeType;
 
-    public Employee(CreateEmployeeRequest createEmployeeRequest, EmployeeType employeeType) {
+    @OneToMany(mappedBy = "employee")
+    List<Request> requests;
+
+    public Employee(CreateEmployeeRequest createEmployeeRequest, EmployeeType employeeType, List<Request> requests) {
         this.documentId = createEmployeeRequest.getDocumentId();
         this.name = createEmployeeRequest.getName();
         this.lastName = createEmployeeRequest.getLastName();
@@ -51,5 +56,7 @@ public class Employee {
         this.birthDate = createEmployeeRequest.getBirthDate();
         this.income = createEmployeeRequest.getIncome();
         this.employeeType = employeeType;
+        this.requests = requests;
+
     }
 }

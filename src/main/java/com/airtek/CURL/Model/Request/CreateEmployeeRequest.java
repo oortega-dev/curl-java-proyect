@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Schema(description = "Json model required to create employee")
@@ -29,7 +31,7 @@ public class CreateEmployeeRequest {
 
     private Gender gender;
 
-    private Timestamp birthDate;
+    private LocalDateTime birthDate;
 
     @PositiveOrZero
     @Max(5000)
