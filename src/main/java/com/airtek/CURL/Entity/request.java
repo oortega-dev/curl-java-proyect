@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-@Table(schema = "base_proyect", )
+@Table(schema = "curl_proyect")
 public class request {
 
     @Id
