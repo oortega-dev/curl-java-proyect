@@ -1,6 +1,7 @@
 package com.airtek.CURL.Exception;
 
 import com.airtek.CURL.Model.Enums.Language;
+import com.airtek.CURL.Util.AirtekTokenResponse;
 import org.springframework.http.ResponseEntity;
 
 public class ControllerException extends RuntimeException {

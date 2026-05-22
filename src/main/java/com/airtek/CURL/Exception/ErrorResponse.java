@@ -1,6 +1,7 @@
 package com.airtek.CURL.Exception;
 
 import com.airtek.CURL.Model.Enums.Language;
+import com.airtek.CURL.Util.AirtekTokenResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.http.HttpStatus;
