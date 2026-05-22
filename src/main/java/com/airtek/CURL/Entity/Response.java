@@ -1,11 +1,11 @@
 package com.airtek.CURL.Entity;
 
+import com.airtek.CURL.Model.Response.CreateResponse;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -36,4 +36,13 @@ public class Response {
 
     @OneToOne(mappedBy = "response")
     private Request request;
+
+    public Response(CreateResponse response, Request request) {
+        this.status = response.getStatus();
+        this.code = response.getCode();
+        this.body = response.getBody();
+        this.created = LocalDateTime.now();
+        this.timeDelay = response.getTimeDelay();
+        this.request = request;
+    }
 }

@@ -1,6 +1,7 @@
 package com.airtek.CURL.Entity;
 
 import com.airtek.CURL.Model.Enums.RequestType;
+import com.airtek.CURL.Model.Request.CreateRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -44,4 +45,13 @@ public class Request {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Response response;
 
+    public Request(CreateRequest request, Employee employee, Response response) {
+        this.description = request.getDescription();
+        this.type = request.getType();
+        this.body = request.getBody();
+        this.url = request.getUrl();
+        this.created = LocalDateTime.now();
+        this.employee = employee;
+        this.response = response;
+    }
 }
