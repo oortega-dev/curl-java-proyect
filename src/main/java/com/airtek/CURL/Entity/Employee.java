@@ -1,5 +1,6 @@
 package com.airtek.CURL.Entity;
 
+import com.airtek.CURL.Model.Enums.EmployeeType;
 import com.airtek.CURL.Model.Enums.Gender;
 import com.airtek.CURL.Model.Request.CreateEmployeeRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -7,7 +8,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -59,4 +59,5 @@ public class Employee {
         this.requests = requests;
 
     }
+
 }
