@@ -2,7 +2,7 @@ package com.airtek.CURL.Entity;
 
 import com.airtek.CURL.Model.Enums.EmployeeType;
 import com.airtek.CURL.Model.Enums.Gender;
-import com.airtek.CURL.Model.Request.CreateEmployeeRequest;
+import com.airtek.CURL.Model.Request.EmployeeRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -48,16 +48,14 @@ public class Employee {
     @OneToMany(mappedBy = "employee")
     List<Request> requests;
 
-    public Employee(CreateEmployeeRequest createEmployeeRequest, EmployeeType employeeType, List<Request> requests) {
-        this.documentId = createEmployeeRequest.getDocumentId();
-        this.name = createEmployeeRequest.getName();
-        this.lastName = createEmployeeRequest.getLastName();
-        this.gender = createEmployeeRequest.getGender();
-        this.birthDate = createEmployeeRequest.getBirthDate();
-        this.income = createEmployeeRequest.getIncome();
-        this.employeeType = employeeType;
+    public Employee(EmployeeRequest employeeRequest, List<Request> requests) {
+        this.documentId = employeeRequest.getDocumentId();
+        this.name = employeeRequest.getName();
+        this.lastName = employeeRequest.getLastName();
+        this.gender = employeeRequest.getGender();
+        this.birthDate = employeeRequest.getBirthDate();
+        this.income = employeeRequest.getIncome();
+        this.employeeType = employeeRequest.getEmployeeType();
         this.requests = requests;
-
     }
-
 }

@@ -1,5 +1,6 @@
 package com.airtek.CURL.Model.Request;
 
+import com.airtek.CURL.Model.Enums.EmployeeType;
 import com.airtek.CURL.Model.Enums.Gender;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Schema(description = "Json model required to create employee")
 @Getter @Setter
 @NoArgsConstructor
-public class CreateEmployeeRequest {
+public class EmployeeRequest {
 
     private String documentId;
 
@@ -33,4 +34,6 @@ public class CreateEmployeeRequest {
     @PositiveOrZero
     @Max(5000)
     private Double income;
+
+    private EmployeeType employeeType;
 }
