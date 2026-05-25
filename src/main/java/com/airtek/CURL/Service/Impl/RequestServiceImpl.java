@@ -34,6 +34,7 @@ public class RequestServiceImpl implements IRequestService {
     @Override
     public BaseResponse removeRequest(Long id) throws ControllerException {
         return null;
+
     }
 
     @Override
