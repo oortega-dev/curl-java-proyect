@@ -27,7 +27,6 @@ public class RequestServiceImpl implements IRequestService {
     @Override
     public CreateRequestResponse createRequest(RequestRequest request) throws ControllerException {
         logger.info("Create Request service");
-        Optional<RequestRepository> optionalRequest = repo.findBy(request.ge)
 
         return null;
     }
