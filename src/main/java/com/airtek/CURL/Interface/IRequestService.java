@@ -1,13 +1,14 @@
 package com.airtek.CURL.Interface;
 
 import com.airtek.CURL.Entity.Employee;
+import com.airtek.CURL.Entity.Request;
 import com.airtek.CURL.Exception.ControllerException;
 import com.airtek.CURL.Model.Request.EmployeeRequest;
 import com.airtek.CURL.Model.Request.RequestRequest;
 import com.airtek.CURL.Model.Response.BaseResponse;
-import com.airtek.CURL.Model.Response.CreateEmployeeResponse;
 import com.airtek.CURL.Model.Response.CreateRequestResponse;
 import com.airtek.CURL.Model.Response.GetEmployeeResponse;
+import com.airtek.CURL.Model.Response.GetRequestResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,14 +17,13 @@ public interface IRequestService {
 
     CreateRequestResponse createRequest(RequestRequest request) throws ControllerException;
 
-    BaseResponse removeEmployee(String documentId) throws ControllerException;
+    BaseResponse removeRequest(Long id) throws ControllerException;
 
-    BaseResponse updateEmployee(EmployeeRequest employeeRequest) throws ControllerException;
+    BaseResponse updateRequest(RequestRequest request) throws ControllerException;
 
-    GetEmployeeResponse getEmployee(String documentId) throws ControllerException;
+    GetRequestResponse getRequest(Long id) throws ControllerException;
 
-    List<GetEmployeeResponse> getEmployeesList() throws ControllerException;
+    List<GetRequestResponse> getRequestList() throws ControllerException;
 
-    BaseResponse updateRecord(EmployeeRequest employeeRequest, Optional<Employee> optionalEmployee);
-
+    BaseResponse updateRecord(RequestRequest requestRequest, Optional<Request> optionalRequest);
 }
