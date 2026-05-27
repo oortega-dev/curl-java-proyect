@@ -2,13 +2,14 @@ package com.airtek.CURL.Entity;
 
 import com.airtek.CURL.Model.Enums.EmployeeType;
 import com.airtek.CURL.Model.Enums.Gender;
-import com.airtek.CURL.Model.Request.EmployeeRequest;
+import com.airtek.CURL.Model.Request.CreateEmployeeRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -40,22 +41,21 @@ public class Employee {
     @Column(name = "income", columnDefinition = "numeric")
     private Double income;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employeeType")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @Enumerated(EnumType.STRING)
+    @Column(name = "employee_type")
     private EmployeeType employeeType;
 
     @OneToMany(mappedBy = "employee")
-    List<Request> requests;
+    List<Request> Requests;
 
-    public Employee(EmployeeRequest employeeRequest, List<Request> requests) {
-        this.documentId = employeeRequest.getDocumentId();
-        this.name = employeeRequest.getName();
-        this.lastName = employeeRequest.getLastName();
-        this.gender = employeeRequest.getGender();
-        this.birthDate = employeeRequest.getBirthDate();
-        this.income = employeeRequest.getIncome();
-        this.employeeType = employeeRequest.getEmployeeType();
-        this.requests = requests;
+    public Employee(CreateEmployeeRequest createEmployeeRequest) {
+        this.documentId = createEmployeeRequest.getDocumentId();
+        this.name = createEmployeeRequest.getName();
+        this.lastName = createEmployeeRequest.getLastName();
+        this.gender = createEmployeeRequest.getGender();
+        this.birthDate = createEmployeeRequest.getBirthDate();
+        this.income = createEmployeeRequest.getIncome();
+        this.employeeType = createEmployeeRequest.getEmployeeType();
+        this.Requests = new ArrayList<>();
     }
 }

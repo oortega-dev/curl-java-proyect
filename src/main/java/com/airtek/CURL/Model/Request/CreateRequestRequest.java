@@ -11,9 +11,10 @@ import lombok.Setter;
 @Schema(description = "Json model required to create a shared request template")
 @Getter @Setter
 @NoArgsConstructor
-public class RequestRequest {
+public class CreateRequestRequest {
 
-    private String description;
+    @NotNull
+    private String name;
 
     @NotNull
     private RequestType type;
@@ -24,5 +25,5 @@ public class RequestRequest {
     private String url;
 
     @NotNull
-    private Long employeeId; // ID del empleado que está guardando la plantilla
+    private String employeeDocumentId;
 }

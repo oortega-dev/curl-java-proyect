@@ -1,7 +1,7 @@
 package com.airtek.CURL.Model.Response;
 
 import com.airtek.CURL.Model.Enums.Gender;
-import com.airtek.CURL.Model.Request.EmployeeRequest;
+import com.airtek.CURL.Model.Request.CreateEmployeeRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -23,11 +23,11 @@ public class CreateEmployeeResponse {
     private LocalDateTime birthDate;
     private Double income;
 
-    public CreateEmployeeResponse(EmployeeRequest employeeRequest) {
-        this.name = employeeRequest.getName();
-        this.lastName = employeeRequest.getLastName();
-        this.gender = employeeRequest.getGender();
-        this.birthDate = employeeRequest.getBirthDate();
-        this.income = employeeRequest.getIncome();
+    public CreateEmployeeResponse(CreateEmployeeRequest createEmployeeRequest) {
+        this.name = createEmployeeRequest.getName();
+        this.lastName = createEmployeeRequest.getLastName();
+        this.gender = createEmployeeRequest.getGender();
+        this.birthDate = createEmployeeRequest.getBirthDate();
+        this.income = createEmployeeRequest.getIncome();
     }
 }

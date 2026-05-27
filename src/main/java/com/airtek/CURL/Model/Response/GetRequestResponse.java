@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class GetRequestResponse {
 
-    private Long id;
     private String description;
     private RequestType type;
     private String body;
@@ -21,16 +20,15 @@ public class GetRequestResponse {
     private LocalDateTime created;
     private GetEmployeeResponse createdBy; // Mapea el DTO del empleado que ya hiciste
 
-    public GetRequestResponse(Request request) {
-        this.id = request.getId();
-        this.description = request.getDescription();
-        this.type = request.getType();
-        this.body = request.getBody();
-        this.url = request.getUrl();
-        this.created = request.getCreated();
+    public GetRequestResponse(Request Request) {
+        this.description = Request.getName();
+        this.type = Request.getType();
+        this.body = Request.getBody();
+        this.url = Request.getUrl();
+        this.created = Request.getCreated();
 
-        if (request.getEmployee() != null) {
-            this.createdBy = new GetEmployeeResponse(request.getEmployee());
+        if (Request.getEmployee() != null) {
+            this.createdBy = new GetEmployeeResponse(Request.getEmployee());
         }
     }
 }

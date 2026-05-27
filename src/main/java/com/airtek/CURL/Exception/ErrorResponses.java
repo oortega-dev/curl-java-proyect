@@ -20,9 +20,14 @@ public class ErrorResponses extends ErrorResponse{
     public static final ErrorResponses EMPLOYEE_ALREADY_EXIST = new ErrorResponses(HttpStatus.PRECONDITION_FAILED, HttpStatus.PRECONDITION_FAILED.value(),
             "Employee already exist");
 
+    public static final ErrorResponses REQUEST_ALREADY_EXIST = new ErrorResponses(HttpStatus.PRECONDITION_FAILED, HttpStatus.PRECONDITION_FAILED.value(),
+            "Request already exist");
+
     public static final ErrorResponses EMPLOYEE_NOT_EXIST = new ErrorResponses(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(),
             "Employee not exist");
 
+    public static final ErrorResponses REQUEST_NOT_EXIST = new ErrorResponses(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(),
+            "Request not exist");
 
     public static final ErrorResponses CUSTOMER_ID_NOT_SET = new ErrorResponses(HttpStatus.PRECONDITION_FAILED, HttpStatus.PRECONDITION_FAILED.value(),
             "The customer id must be part of the request");

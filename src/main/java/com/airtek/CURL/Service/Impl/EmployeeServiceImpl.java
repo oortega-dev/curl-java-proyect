@@ -6,10 +6,11 @@ import com.airtek.CURL.Exception.ControllerException;
 import com.airtek.CURL.Interface.IEmployeeService;
 import com.airtek.CURL.Model.Enums.EmployeeType;
 import com.airtek.CURL.Model.Enums.Language;
-import com.airtek.CURL.Model.Request.EmployeeRequest;
+import com.airtek.CURL.Model.Request.CreateEmployeeRequest;
 import com.airtek.CURL.Model.Response.BaseResponse;
 import com.airtek.CURL.Model.Response.CreateEmployeeResponse;
 import com.airtek.CURL.Model.Response.GetEmployeeResponse;
+import com.airtek.CURL.Model.Response.GetRequestResponse;
 import com.airtek.CURL.Repository.EmployeeRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,17 +32,15 @@ public class EmployeeServiceImpl implements IEmployeeService {
     protected final Log logger = LogFactory.getLog(EmployeeServiceImpl.class);
 
     @Override
-    public CreateEmployeeResponse createEmployee(EmployeeRequest employeeRequest) throws ControllerException {
+    public CreateEmployeeResponse createEmployee(CreateEmployeeRequest createEmployeeRequest) throws ControllerException {
         logger.info("create employee service");
-        Optional<Employee> optionalEmployee = repo.findOneByDocumentId(employeeRequest.getDocumentId());
+        Optional<Employee> optionalEmployee = repo.findOneByDocumentId(createEmployeeRequest.getDocumentId());
         if (optionalEmployee.isPresent())
             throw new ControllerException(EMPLOYEE_ALREADY_EXIST, Language.ENGLISH);
         else {
-            EmployeeType defaultType =  EmployeeType.USER;
-            List<Request> requests = new ArrayList<>();
-            Employee employee = new Employee(employeeRequest, requests);
+            Employee employee = new Employee(createEmployeeRequest);
             repo.save(employee);
-            return new CreateEmployeeResponse(employeeRequest);
+            return new CreateEmployeeResponse(createEmployeeRequest);
         }
     }
 
@@ -57,11 +56,11 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
-    public BaseResponse updateEmployee(EmployeeRequest employeeRequest) throws ControllerException {
+    public BaseResponse updateEmployee(CreateEmployeeRequest createEmployeeRequest) throws ControllerException {
         logger.info("update employee service");
-        Optional<Employee> optionalEmployee = repo.findOneByDocumentId(employeeRequest.getDocumentId());
+        Optional<Employee> optionalEmployee = repo.findOneByDocumentId(createEmployeeRequest.getDocumentId());
         if (optionalEmployee.isPresent()) {
-            return updateRecord(employeeRequest, optionalEmployee);
+            return updateRecord(createEmployeeRequest, optionalEmployee);
         } else
             throw new ControllerException(EMPLOYEE_NOT_EXIST, Language.ENGLISH);
     }
@@ -88,20 +87,35 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
-    public BaseResponse updateRecord(EmployeeRequest employeeRequest, Optional<Employee> optionalEmployee) {
+    public List<GetRequestResponse> getEmployeeRequest(String documentId) throws ControllerException {
+        logger.info("get employee requests service");
+        Optional<Employee> employee = repo.findOneByDocumentId(documentId);
+        if (employee.isPresent()) {
+            List<GetRequestResponse> requests = employee.get().getRequests()
+                    .stream()
+                    .map(GetRequestResponse::new)
+                    .toList();
+            return requests;
+        } else {
+            throw new ControllerException(EMPLOYEE_NOT_EXIST, Language.ENGLISH);
+        }
+    }
+
+    @Override
+    public BaseResponse updateRecord(CreateEmployeeRequest createEmployeeRequest, Optional<Employee> optionalEmployee) {
         Employee employee = optionalEmployee.get();
-        if (null != employeeRequest.getName())
-            employee.setName(employeeRequest.getName());
-        if (null != employeeRequest.getLastName())
-            employee.setLastName(employeeRequest.getLastName());
-        if (null != employeeRequest.getGender())
-            employee.setGender(employeeRequest.getGender());
-        if (null != employeeRequest.getBirthDate())
-            employee.setBirthDate(employeeRequest.getBirthDate());
-        if (null != employeeRequest.getIncome())
-            employee.setIncome(employeeRequest.getIncome());
-        if (null != employeeRequest.getEmployeeType())
-            employee.setEmployeeType(employeeRequest.getEmployeeType());
+        if (null != createEmployeeRequest.getName())
+            employee.setName(createEmployeeRequest.getName());
+        if (null != createEmployeeRequest.getLastName())
+            employee.setLastName(createEmployeeRequest.getLastName());
+        if (null != createEmployeeRequest.getGender())
+            employee.setGender(createEmployeeRequest.getGender());
+        if (null != createEmployeeRequest.getBirthDate())
+            employee.setBirthDate(createEmployeeRequest.getBirthDate());
+        if (null != createEmployeeRequest.getIncome())
+            employee.setIncome(createEmployeeRequest.getIncome());
+        if (null != createEmployeeRequest.getEmployeeType())
+            employee.setEmployeeType(createEmployeeRequest.getEmployeeType());
         repo.save(employee);
         return new BaseResponse();
     }

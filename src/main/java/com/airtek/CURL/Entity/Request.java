@@ -1,12 +1,14 @@
 package com.airtek.CURL.Entity;
 
 import com.airtek.CURL.Model.Enums.RequestType;
-import com.airtek.CURL.Model.Request.RequestRequest;
+import com.airtek.CURL.Model.Request.CreateRequestRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jspecify.annotations.NonNull;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +24,8 @@ public class Request {
     @GeneratedValue(generator = "request_id_seq", strategy = GenerationType.SEQUENCE) // Corregido el generator
     private Long id;
 
-    @Column(name = "description", columnDefinition = "text")
-    private String description;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
@@ -44,15 +46,15 @@ public class Request {
     private Employee employee;
 
     // Cambiado de @OneToOne a @OneToMany: Un Request acumulado tiene muchas respuestas históricas
-    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Response> responses = new ArrayList<>();
+    @OneToMany(mappedBy = "originalRequest", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Backup> reports = new ArrayList<>();
 
     // Constructor limpio: Un request compartido nace sin respuestas aún
-    public Request(RequestRequest request, Employee employee) {
-        this.description = request.getDescription();
-        this.type = request.getType();
-        this.body = request.getBody();
-        this.url = request.getUrl();
+    public Request(CreateRequestRequest createRequestRequest, Employee employee) {
+        this.name = createRequestRequest.getName();
+        this.type = createRequestRequest.getType();
+        this.body = createRequestRequest.getBody();
+        this.url = createRequestRequest.getUrl();
         this.created = LocalDateTime.now();
         this.employee = employee;
     }

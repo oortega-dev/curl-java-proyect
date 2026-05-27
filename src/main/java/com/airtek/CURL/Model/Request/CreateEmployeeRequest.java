@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Schema(description = "Json model required to create employee")
 @Getter @Setter
 @NoArgsConstructor
-public class EmployeeRequest {
+public class CreateEmployeeRequest {
 
     private String documentId;
 
