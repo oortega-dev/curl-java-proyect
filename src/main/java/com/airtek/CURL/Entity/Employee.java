@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -40,24 +41,21 @@ public class Employee {
     @Column(name = "income", columnDefinition = "numeric")
     private Double income;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employeeType")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @Enumerated(EnumType.STRING)
+    @Column(name = "employee_type")
     private EmployeeType employeeType;
 
     @OneToMany(mappedBy = "employee")
-    List<Request> requests;
+    List<Request> Requests;
 
-    public Employee(CreateEmployeeRequest createEmployeeRequest, EmployeeType employeeType, List<Request> requests) {
+    public Employee(CreateEmployeeRequest createEmployeeRequest) {
         this.documentId = createEmployeeRequest.getDocumentId();
         this.name = createEmployeeRequest.getName();
         this.lastName = createEmployeeRequest.getLastName();
         this.gender = createEmployeeRequest.getGender();
         this.birthDate = createEmployeeRequest.getBirthDate();
         this.income = createEmployeeRequest.getIncome();
-        this.employeeType = employeeType;
-        this.requests = requests;
-
+        this.employeeType = createEmployeeRequest.getEmployeeType();
+        this.Requests = new ArrayList<>();
     }
-
 }

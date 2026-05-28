@@ -1,26 +1,31 @@
 package com.airtek.CURL.Entity;
 
 import com.airtek.CURL.Model.Enums.RequestType;
-import com.airtek.CURL.Model.Request.CreateRequest;
+import com.airtek.CURL.Model.Request.CreateRequestRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jspecify.annotations.NonNull;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
 @NoArgsConstructor
 @Table(schema = "curl_proyect", name = "request")
 public class Request {
+
     @Id
-    @SequenceGenerator(name = "request_id_seq", sequenceName = "curl_proyect.request_id_seq",  allocationSize = 1)
-    @GeneratedValue(generator = "curl_proyect.request_id_seq",strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "request_id_seq", sequenceName = "curl_proyect.request_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "request_id_seq", strategy = GenerationType.SEQUENCE) // Corregido el generator
     private Long id;
 
-    @Column(name = "description", columnDefinition = "text")
-    private String description;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
@@ -40,18 +45,17 @@ public class Request {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Employee employee;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "response_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Response response;
+    // Cambiado de @OneToOne a @OneToMany: Un Request acumulado tiene muchas respuestas históricas
+    @OneToMany(mappedBy = "originalRequest", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Backup> reports = new ArrayList<>();
 
-    public Request(CreateRequest request, Employee employee, Response response) {
-        this.description = request.getDescription();
-        this.type = request.getType();
-        this.body = request.getBody();
-        this.url = request.getUrl();
+    // Constructor limpio: Un request compartido nace sin respuestas aún
+    public Request(CreateRequestRequest createRequestRequest, Employee employee) {
+        this.name = createRequestRequest.getName();
+        this.type = createRequestRequest.getType();
+        this.body = createRequestRequest.getBody();
+        this.url = createRequestRequest.getUrl();
         this.created = LocalDateTime.now();
         this.employee = employee;
-        this.response = response;
     }
 }

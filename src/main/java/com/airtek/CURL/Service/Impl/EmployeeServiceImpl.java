@@ -10,6 +10,7 @@ import com.airtek.CURL.Model.Request.CreateEmployeeRequest;
 import com.airtek.CURL.Model.Response.BaseResponse;
 import com.airtek.CURL.Model.Response.CreateEmployeeResponse;
 import com.airtek.CURL.Model.Response.GetEmployeeResponse;
+import com.airtek.CURL.Model.Response.GetRequestResponse;
 import com.airtek.CURL.Repository.EmployeeRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.airtek.CURL.Exception.ErrorResponses.EMPLOYEE_ALREADY_EXIST;
+import static com.airtek.CURL.Exception.ErrorResponses.*;
 
 @Service
 public class EmployeeServiceImpl implements IEmployeeService {
@@ -37,9 +38,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
         if (optionalEmployee.isPresent())
             throw new ControllerException(EMPLOYEE_ALREADY_EXIST, Language.ENGLISH);
         else {
-            EmployeeType defaultType =  EmployeeType.USER;
-            List<Request> requests = new ArrayList<>();
-            Employee employee = new Employee(createEmployeeRequest, defaultType, requests);
+            Employee employee = new Employee(createEmployeeRequest);
             repo.save(employee);
             return new CreateEmployeeResponse(createEmployeeRequest);
         }
@@ -47,21 +46,77 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Override
     public BaseResponse removeEmployee(String documentId) throws ControllerException {
-        return null;
+        logger.info("remove employee service");
+        Optional<Employee> optionalEmployee = repo.findOneByDocumentId(documentId);
+        if (optionalEmployee.isPresent()) {
+            repo.delete(optionalEmployee.get());
+            return new BaseResponse();
+        }
+        throw new ControllerException(EMPLOYEE_NOT_EXIST, Language.ENGLISH);
     }
 
     @Override
-    public BaseResponse updateEmployee(CreateEmployeeRequest employeeRequest) throws ControllerException {
-        return null;
+    public BaseResponse updateEmployee(CreateEmployeeRequest createEmployeeRequest) throws ControllerException {
+        logger.info("update employee service");
+        Optional<Employee> optionalEmployee = repo.findOneByDocumentId(createEmployeeRequest.getDocumentId());
+        if (optionalEmployee.isPresent()) {
+            return updateRecord(createEmployeeRequest, optionalEmployee);
+        } else
+            throw new ControllerException(EMPLOYEE_NOT_EXIST, Language.ENGLISH);
     }
 
     @Override
     public GetEmployeeResponse getEmployee(String documentId) throws ControllerException {
-        return null;
+        logger.info("get employee service");
+        Optional<Employee> optionalEmployee = repo.findOneByDocumentId(documentId);
+        if (optionalEmployee.isPresent()) {
+            return new GetEmployeeResponse(optionalEmployee.get());
+        } else {
+            throw new ControllerException(EMPLOYEE_NOT_EXIST, Language.ENGLISH);
+        }
     }
 
     @Override
     public List<GetEmployeeResponse> getEmployeesList() throws ControllerException {
-        return List.of();
+        logger.info("get employee service");
+        List<GetEmployeeResponse> listEmployee = repo.findAll()
+                .stream()
+                .map(GetEmployeeResponse::new)
+                .toList();
+        return listEmployee;
+    }
+
+    @Override
+    public List<GetRequestResponse> getEmployeeRequest(String documentId) throws ControllerException {
+        logger.info("get employee requests service");
+        Optional<Employee> employee = repo.findOneByDocumentId(documentId);
+        if (employee.isPresent()) {
+            List<GetRequestResponse> requests = employee.get().getRequests()
+                    .stream()
+                    .map(GetRequestResponse::new)
+                    .toList();
+            return requests;
+        } else {
+            throw new ControllerException(EMPLOYEE_NOT_EXIST, Language.ENGLISH);
+        }
+    }
+
+    @Override
+    public BaseResponse updateRecord(CreateEmployeeRequest createEmployeeRequest, Optional<Employee> optionalEmployee) {
+        Employee employee = optionalEmployee.get();
+        if (null != createEmployeeRequest.getName())
+            employee.setName(createEmployeeRequest.getName());
+        if (null != createEmployeeRequest.getLastName())
+            employee.setLastName(createEmployeeRequest.getLastName());
+        if (null != createEmployeeRequest.getGender())
+            employee.setGender(createEmployeeRequest.getGender());
+        if (null != createEmployeeRequest.getBirthDate())
+            employee.setBirthDate(createEmployeeRequest.getBirthDate());
+        if (null != createEmployeeRequest.getIncome())
+            employee.setIncome(createEmployeeRequest.getIncome());
+        if (null != createEmployeeRequest.getEmployeeType())
+            employee.setEmployeeType(createEmployeeRequest.getEmployeeType());
+        repo.save(employee);
+        return new BaseResponse();
     }
 }
