@@ -61,7 +61,7 @@ public class EmployeeController {
 
     @GetMapping(value = "/getEmployeeRequest")
     @Operation(summary = "get employee requests")
-    public List<GetRequestResponse> getEmployeeRequest(String documentId) throws ControllerException {
+    public List<GetRequestResponse> getEmployeeRequest(@RequestParam String documentId) throws ControllerException {
         return employeeService.getEmployeeRequest(documentId);
     }
 
