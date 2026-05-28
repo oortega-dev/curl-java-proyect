@@ -25,8 +25,8 @@ public class RequestController {
 
     @PostMapping(value = "/create-request")
     @Operation(summary = "create request")
-    public CreateRequestResponse CreateColection(@RequestBody CreateRequestResponse createRequestResponse) throws ControllerException {
-        return null;
+    public CreateRequestResponse createRequest(@RequestBody CreateRequestRequest createRequestRequest) throws ControllerException {
+        return requestService.createRequest(createRequestRequest);
     }
 
     @PutMapping(value = "/update-request")
