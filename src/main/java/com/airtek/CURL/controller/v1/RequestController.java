@@ -22,8 +22,8 @@ public class RequestController {
     @Autowired
     protected RequestServiceImpl requestService;
 
-    @PostMapping(value = "/create-colection")
-    @Operation(summary = "create colection")
+    @PostMapping(value = "/create-request")
+    @Operation(summary = "create request")
     public CreateRequestResponse CreateColection(@RequestBody CreateRequestResponse createRequestResponse) throws ControllerException {
         return null;
     }
