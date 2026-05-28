@@ -38,7 +38,6 @@ public class RequestServiceImpl implements IRequestService {
     @Autowired
     protected BackupRepository backRepo;
 
-
     @Override
     public CreateRequestResponse createRequest(CreateRequestRequest createRequestRequest) throws ControllerException {
         logger.info("Create Request service");
@@ -118,7 +117,8 @@ public class RequestServiceImpl implements IRequestService {
         reqRepo.save(request);
         return new BaseResponse();
     }
-    public List<GetBackupResponse> getRequestchanges(String name){
+
+    public List<GetBackupResponse> getReports(String name){
         logger.info("get requests users service");
         Request request = reqRepo.findOneByName(name);
         if (request!=null){
@@ -130,5 +130,4 @@ public class RequestServiceImpl implements IRequestService {
         }
         else throw new ControllerException(REQUEST_NOT_EXIST, Language.ENGLISH);
     }
-
 }
