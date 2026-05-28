@@ -19,54 +19,46 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/curl-ms")
-@CrossOrigin
 public class EmployeeController {
     protected final Log logger = LogFactory.getLog(EmployeeController.class);
 
     @Autowired
     protected IEmployeeService employeeService;
 
-    @PostMapping(value = "/createEmployee")
+    @PostMapping(value = "/create-employee")
     @Operation(summary = "create employee")
-    public CreateEmployeeResponse createEmployee(@Parameter(description = "User token provided by auth service, sends Bearer, space and token.") @RequestHeader(value = "Authorization") String token,
-                                                 @Valid @RequestBody CreateEmployeeRequest createEmployeeRequest) throws ControllerException {
-
+    public CreateEmployeeResponse createEmployee(@RequestBody CreateEmployeeRequest createEmployeeRequest) throws ControllerException {
         return employeeService.createEmployee(createEmployeeRequest);
     }
 
-    @PutMapping(value = "/updateEmployee")
+    @PutMapping(value = "/update-employee")
     @Operation(summary = "update Employee")
     public BaseResponse updateEmployee(@RequestBody CreateEmployeeRequest createEmployeeRequest) throws ControllerException {
         return employeeService.updateEmployee(createEmployeeRequest);
     }
 
-    @DeleteMapping(value = "/removeEmployee")
+    @DeleteMapping(value = "/remove-employee")
     @Operation(summary = "remove Employee")
     public BaseResponse removeEmployee(@RequestParam String documentId) throws ControllerException {
 
         return employeeService.removeEmployee(documentId);
     }
 
-    @GetMapping(value = "/getEmployee")
+    @GetMapping(value = "/get-employee")
     @Operation(summary = "get Employee")
     public GetEmployeeResponse getEmployee(@RequestParam String documentId) throws ControllerException {
         return employeeService.getEmployee(documentId);
     }
 
-    @GetMapping(value = "/getEmployees")
+    @GetMapping(value = "/get-employees")
     @Operation(summary = "get employees list")
     public List<GetEmployeeResponse> getEmployeesList() throws ControllerException {
         return employeeService.getEmployeesList();
     }
 
-    @GetMapping(value = "/getEmployeeRequest")
+    @GetMapping(value = "/get-employee-request")
     @Operation(summary = "get employee requests")
     public List<GetRequestResponse> getEmployeeRequest(@RequestParam String documentId) throws ControllerException {
         return employeeService.getEmployeeRequest(documentId);
     }
-
-
-
-
-
 }

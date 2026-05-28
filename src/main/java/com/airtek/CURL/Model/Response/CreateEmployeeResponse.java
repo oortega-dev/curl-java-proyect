@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Schema(description = "Json model response to create employee")
@@ -20,7 +21,7 @@ public class CreateEmployeeResponse {
     private String name;
     private String lastName;
     private Gender gender;
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
     private Double income;
 
     public CreateEmployeeResponse(CreateEmployeeRequest createEmployeeRequest) {

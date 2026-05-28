@@ -10,6 +10,8 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -29,7 +31,7 @@ public class CreateEmployeeRequest {
 
     private Gender gender;
 
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
 
     @PositiveOrZero
     @Max(5000)
