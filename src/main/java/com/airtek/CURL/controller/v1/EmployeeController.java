@@ -19,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/curl-ms")
+@CrossOrigin
 public class EmployeeController {
     protected final Log logger = LogFactory.getLog(EmployeeController.class);
 
